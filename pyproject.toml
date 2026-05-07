@@ -1,0 +1,97 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tabkernels"
+dynamic = ["version"]
+description = "Kernels and Transformers for Tabular Data — companion package to the monograph"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Agus Sudjianto"}]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "torch>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.12",
+    "scikit-learn>=1.4",
+    "pandas>=2.1",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+    "papermill>=2.5",
+    "jupytext>=1.16",
+]
+docs = [
+    "sphinx>=7.3",
+    "sphinx-rtd-theme>=2.0",
+    "myst-parser>=3.0",
+    "sphinx-autodoc-typehints>=2.2",
+]
+benchmarks = [
+    "openml>=0.14",
+    "xgboost>=2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/asudjianto-xml/Kernel-Transformer"
+Documentation = "https://tabkernels.readthedocs.io"
+Repository = "https://github.com/asudjianto-xml/Kernel-Transformer"
+Issues = "https://github.com/asudjianto-xml/Kernel-Transformer/issues"
+
+[project.scripts]
+tabkernels-notebooks = "tabkernels.notebooks_cli:main"
+
+[tool.hatch.version]
+path = "src/tabkernels/version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tabkernels"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"notebooks" = "tabkernels/_notebooks"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/tabkernels",
+    "notebooks",
+    "tests",
+    "examples",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "pyproject.toml",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "NPY", "PD"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=tabkernels --cov-report=term-missing"
